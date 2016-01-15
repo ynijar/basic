@@ -14,7 +14,12 @@ return [
     ],
     'components' => [
         'db' => [
-            'dsn' => 'mysql:host=localhost;dbname=yii2_basic_tests',
+            'host' => 'localhost',
+            'adapter' => 'Mysql',
+            'username' => 'root',
+            'password' => 'root',
+            'dbname' => 'basic',
+            'charset' => 'utf8'
         ],
         'mailer' => [
             'useFileTransport' => true,
