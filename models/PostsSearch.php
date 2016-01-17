@@ -19,7 +19,7 @@ class PostsSearch extends Posts
     {
         return [
             [['id'], 'integer'],
-            [['title', 'status', 'description'], 'safe'],
+            [['title', 'status_id', 'create', 'description', 'end_date'], 'safe'],
         ];
     }
 
@@ -55,14 +55,17 @@ class PostsSearch extends Posts
             return $dataProvider;
         }
 
+        $query->joinWith('status');
+
         $query->andFilterWhere([
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'status' => $this->status,
+            'end_date' => $this->end_date,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'status.name', $this->status_id]);
 
         return $dataProvider;
     }
