@@ -74,12 +74,15 @@ class PostsController extends Controller
     {
         $model = new Posts();
 
-        $model->user_id = Yii::$app->user->getId();
-        $model->create = Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s'));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->user_id = Yii::$app->user->getId();
+            $model->create = date('Y-d-m h:i:s');
+            $model->save();
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('create', [
+            return $this->renderAjax('create', [
                 'model' => $model,
             ]);
         }
@@ -94,9 +97,12 @@ class PostsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->update = Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s'));
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $model->update = date('yyyy-mm-dd');
+            $model->save();
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

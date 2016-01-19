@@ -13,7 +13,8 @@ use Yii;
  * @property string $description
  * @property string $create
  * @property string $update
- * @property string $status
+ * @property string $status_id
+ * @property string $end_date
  *
  */
 class Posts extends \yii\db\ActiveRecord
@@ -32,10 +33,11 @@ class Posts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'title'], 'required'],
+            [['user_id', 'title', 'status_id'], 'required'],
             [['user_id'], 'integer'],
             [['description'], 'string'],
-            [['title', 'create', 'update', 'status'], 'string', 'max' => 115]
+            [['end_date', 'create', 'update'], 'safe'],
+            [['title', 'status_id'], 'string', 'max' => 115]
         ];
     }
 
@@ -49,7 +51,18 @@ class Posts extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'title' => 'Title',
             'description' => 'Description',
+            'status_id' => 'Status',
+            'status.name' => 'Status',
+            'end_date' => 'End date'
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus()
+    {
+        return $this->hasOne(Status::className(), ['id' => 'status_id']);
     }
 
 }
